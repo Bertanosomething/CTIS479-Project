@@ -40,7 +40,7 @@ namespace BLL.Services
             if (publisher == null)
                 return Error("Publisher not found!");
 
-            // Check if any books are associated with the publisher
+            // Checks if any books are associated with the publisher
             if (_db.Books.Any(b => b.PublisherId == id))
                 return Error("Publisher cannot be deleted because it is associated with one or more books.");
 

@@ -41,11 +41,9 @@ namespace BLL.Services
             if (author == null)
                 return Error("Author not found!");
 
-            // Optionally, you could check if this author has any books associated with them
-            // and handle the deletion accordingly (e.g., you might want to delete or reassign the books)
-            _db.Books.RemoveRange(author.Books);  // Example if cascade delete is not set
+            
+            _db.Books.RemoveRange(author.Books);  
 
-            // Remove the author from the database
             _db.Authors.Remove(author);
             _db.SaveChanges();
 
@@ -63,10 +61,10 @@ namespace BLL.Services
             if (existingAuthor == null)
                 return Error("Author not found!");
 
-            // Update the properties of the existing author
+            
             existingAuthor.Name = author.Name?.Trim();
 
-            // Save changes to the database
+           
             _db.SaveChanges();
 
             return Success("Author updated successfully.");

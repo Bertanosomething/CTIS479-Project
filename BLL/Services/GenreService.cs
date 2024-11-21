@@ -40,7 +40,7 @@ namespace BLL.Services
             if (genre == null)
                 return Error("Genre not found!");
 
-            // Check if any books are associated with the genre
+            // Checks if any books are associated with the genre
             if (_db.Books.Any(b => b.GenreId == id))
                 return Error("Genre cannot be deleted because it is associated with one or more books.");
 
