@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BLL.Controllers.Bases;
 using BLL.Services;
 using BLL.Models;
-using Microsoft.EntityFrameworkCore;
 
 // Generated from Custom Template.
 
@@ -13,7 +12,7 @@ namespace CTIS479_Project.Controllers
     public class AuthorsController : MvcController
     {
         // Service injections:
-        private readonly BLL.Services.IAuthorService _authorService;
+        private readonly IAuthorService _authorService;
 
         /* Can be uncommented and used for many to many relationships. ManyToManyRecord may be replaced with the related entiy name in the controller and views. */
         //private readonly IManyToManyRecordService _ManyToManyRecordService;
@@ -43,24 +42,8 @@ namespace CTIS479_Project.Controllers
         public IActionResult Details(int id)
         {
             // Get item service logic:
-            // var item = _authorService.Query().SingleOrDefault(q => q.Record.Id == id);
-            //return View(item);
-            var item = _authorService.Query()
-        .Where(a => a.Record.Id == id)
-        .Select(a => new AuthorModel
-        {
-            Record = a.Record,
-            BookNames = a.Record.Books.Select(b => b.Name).ToList() // Fetch book names
-        })
-        .SingleOrDefault();
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
+            var item = _authorService.Query().SingleOrDefault(q => q.Record.Id == id);
             return View(item);
-
         }
 
         protected void SetViewData()

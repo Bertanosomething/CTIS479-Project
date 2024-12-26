@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BLL.DAL;
 
-[Index("Email", Name = "UQ__Users__A9D105349B8589C8", IsUnique = true)]
 public partial class User
 {
     [Key]
@@ -16,29 +15,17 @@ public partial class User
 
     [Required]
     [StringLength(50)]
-    public string Name { get; set; }
-
-    [Required]
-    [StringLength(50)]
-    public string Surname { get; set; }
+    public string Username { get; set; }
 
     [Required]
     [StringLength(50)]
     public string Password { get; set; }
 
-    [Required]
-    [StringLength(100)]
-    public string Address { get; set; }
+    public bool IsActive { get; set; }
 
-    [Required]
-    [StringLength(15)]
-    public string Phone { get; set; }
+    public int RoleId { get; set; }
 
-    [Required]
-    [StringLength(100)]
-    public string Email { get; set; }
-
-    [ForeignKey("UserId")]
+    [ForeignKey("RoleId")]
     [InverseProperty("Users")]
-    public virtual ICollection<Book> Books { get; set; } = new List<Book>();
+    public virtual Role Role { get; set; }
 }

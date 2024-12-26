@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BLL.DAL;
 
-public partial class Genre
+public partial class Role
 {
     [Key]
     public int Id { get; set; }
@@ -17,6 +17,6 @@ public partial class Genre
     [StringLength(50)]
     public string Name { get; set; }
 
-    [InverseProperty("Genre")]
-    public virtual ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
+    [InverseProperty("Role")]
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

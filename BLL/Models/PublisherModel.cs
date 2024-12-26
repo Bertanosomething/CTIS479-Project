@@ -15,12 +15,15 @@ namespace BLL.Models
 
         [DisplayName("Publisher Name")]
         public string Name => Record.Name;
+        [DisplayName("Books")]
+        public string Books => string.Join("<br>", Record.Books.Select(b => b.Name)); 
+            
 
-        [DisplayName("Books Published by this Publisher")]
-        public List<int> BookIds
-        {
-            get => Record.Books?.Select(ps => ps.Id).ToList();
-            set => Record.Books = value.Select(v => new Book() { Id = v }).ToList();
-        }
+        //[DisplayName("Books Published by this Publisher")]
+        //public List<int> BookIds
+        //{
+        //    get => Record.Books?.Select(ps => ps.Id).ToList();
+        //    set => Record.Books = value.Select(v => new Book() { Id = v }).ToList();
+        //}
     }
 }

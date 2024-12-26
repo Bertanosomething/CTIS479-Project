@@ -17,9 +17,13 @@ public partial class DB : DbContext
 
     public virtual DbSet<Book> Books { get; set; }
 
+    public virtual DbSet<BookGenre> BookGenres { get; set; }
+
     public virtual DbSet<Genre> Genres { get; set; }
 
     public virtual DbSet<Publisher> Publishers { get; set; }
+
+    public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -32,24 +36,27 @@ public partial class DB : DbContext
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Books__3214EC07F649F826");
+            entity.HasKey(e => e.Id).HasName("PK__Books__3214EC077EF8F024");
 
             entity.HasOne(d => d.Author).WithMany(p => p.Books)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Books_Authors");
-
-            entity.HasOne(d => d.Genre).WithMany(p => p.Books)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Books_Genres");
 
             entity.HasOne(d => d.Publisher).WithMany(p => p.Books)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Books_Publishers");
         });
 
+        modelBuilder.Entity<BookGenre>(entity =>
+        {
+            entity.HasOne(d => d.Book).WithMany(p => p.BookGenres).HasConstraintName("FK_BookGenres_Books");
+
+            entity.HasOne(d => d.Genre).WithMany(p => p.BookGenres).HasConstraintName("FK_BookGenres_Genres");
+        });
+
         modelBuilder.Entity<Genre>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Genres__3214EC074504E22A");
+            entity.HasKey(e => e.Id).HasName("PK__Genres__3214EC070D473F8E");
         });
 
         modelBuilder.Entity<Publisher>(entity =>
@@ -57,26 +64,20 @@ public partial class DB : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Publishe__3214EC07BF3277AA");
         });
 
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC0786B14902");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC076567C2FC");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC075411C8CF");
 
-            entity.HasMany(d => d.Books).WithMany(p => p.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserBook",
-                    r => r.HasOne<Book>().WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UserBooks_Books"),
-                    l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UserBooks_Users"),
-                    j =>
-                    {
-                        j.HasKey("UserId", "BookId");
-                        j.ToTable("UserBooks");
-                    });
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Users_Roles");
         });
 
         OnModelCreatingPartial(modelBuilder);

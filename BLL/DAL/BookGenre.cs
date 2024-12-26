@@ -8,15 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BLL.DAL;
 
-public partial class Genre
+public partial class BookGenre
 {
     [Key]
     public int Id { get; set; }
 
-    [Required]
-    [StringLength(50)]
-    public string Name { get; set; }
+    public int BookId { get; set; }
 
-    [InverseProperty("Genre")]
-    public virtual ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
+    public int GenreId { get; set; }
+
+    [ForeignKey("BookId")]
+    [InverseProperty("BookGenres")]
+    public virtual Book Book { get; set; }
+
+    [ForeignKey("GenreId")]
+    [InverseProperty("BookGenres")]
+    public virtual Genre Genre { get; set; }
 }

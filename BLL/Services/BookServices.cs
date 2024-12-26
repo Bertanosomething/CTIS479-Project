@@ -30,8 +30,7 @@ namespace BLL.Services
             if (book.Quantity.HasValue && book.Quantity.Value < 0)
                 return Error("Stock amount must be a positive number!");
             book.Name = book.Name?.Trim();
-            book.Quantity = book.Quantity.Value;
-            book.Price=book.Price.Value;
+            
             _db.Books.Add(book);
             _db.SaveChanges();
             return Success("Book created successfully.");
@@ -39,7 +38,7 @@ namespace BLL.Services
 
         public Service Delete(int id)
         {
-            var book = _db.Books.Include(b => b.Author).SingleOrDefault(b => b.Id == id);
+            var book = _db.Books.SingleOrDefault(b => b.Id == id);
             if (book == null)
                 return Error("Book not found!");
             _db.Books.Remove(book);
@@ -54,7 +53,7 @@ namespace BLL.Services
 
         public IQueryable<BookModel> Query()
         {
-            return _db.Books.Include(b => b.Author).Include(b => b.Genre).Include(b => b.Publisher).OrderByDescending(b => b.Quantity).ThenBy(b => b.Name).Select(b => new BookModel { Record = b});
+            return _db.Books.Include(b => b.Author).Include(b => b.Publisher).Include(b => b.BookGenres).ThenInclude(ps => ps.Genre).OrderByDescending(b => b.Quantity).ThenBy(b=>b.PublishDate).ThenBy(b => b.Name).Select(b => new BookModel { Record = b});
         }
 
         public Service Update(Book book)
@@ -67,25 +66,20 @@ namespace BLL.Services
                 return Error("Quantity must be a positive number!");
 
             
-            var entity = _db.Books.Include(b => b.Author) 
+            var entity = _db.Books.Include(b => b.Author).Include(b=>b.BookGenres) 
                                   .SingleOrDefault(b => b.Id == book.Id);
 
            
             if (entity == null)
                 return Error("Book not found!");
 
-            
+            _db.BookGenres.RemoveRange(entity.BookGenres);
             entity.Name = book.Name?.Trim(); 
             entity.Price = book.Price;
             entity.Quantity = book.Quantity;
-            entity.AuthorId = book.AuthorId;  
-            //entity.Author = book.Author;
-            //DELETE BELOW IF IT DOESN'T WORK
-            if (book.Author != null)
-            {
-                _db.Authors.Attach(book.Author); 
-                entity.Author = book.Author;
-            }
+            entity.AuthorId = book.AuthorId;
+            entity.BookGenres = book.BookGenres;
+            entity.PublishDate = book.PublishDate;
 
             _db.Books.Update(entity);
 

@@ -41,7 +41,7 @@ namespace BLL.Services
                 return Error("Genre not found!");
 
             // Checks if any books are associated with the genre
-            if (_db.Books.Any(b => b.GenreId == id))
+            if (_db.BookGenres.Any(bg => bg.GenreId == id))
                 return Error("Genre cannot be deleted because it is associated with one or more books.");
 
             _db.Genres.Remove(genre);
@@ -52,7 +52,8 @@ namespace BLL.Services
 
         public IQueryable<GenreModel> Query()
         {
-            return _db.Genres.Include(s => s.Books).Select(s => new GenreModel { Record = s });
+            //return _db.Genres.Include(s => s.Name).Select(s => new GenreModel { Record = s });
+            return _db.Genres.Select(s => new GenreModel { Record = s });
         }
 
         public Service Update(Genre genre)

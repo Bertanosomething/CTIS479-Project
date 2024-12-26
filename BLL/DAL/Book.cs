@@ -26,21 +26,15 @@ public partial class Book
 
     public int PublisherId { get; set; }
 
-    public int GenreId { get; set; }
-
     [ForeignKey("AuthorId")]
     [InverseProperty("Books")]
     public virtual Author Author { get; set; }
 
-    [ForeignKey("GenreId")]
-    [InverseProperty("Books")]
-    public virtual Genre Genre { get; set; }
+    [InverseProperty("Book")]
+    public virtual ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
 
     [ForeignKey("PublisherId")]
     [InverseProperty("Books")]
     public virtual Publisher Publisher { get; set; }
-
-    [ForeignKey("BookId")]
-    [InverseProperty("Books")]
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public DateTime? PublishDate { get; set; }
 }

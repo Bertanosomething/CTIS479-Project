@@ -49,20 +49,22 @@
             @Html.DisplayFor(model => model.Quantity)
         </div>
     </div>
+    @**@
+        <div class="row mb-3">
+            <div class="col-2 fw-bold">
+                @Html.DisplayNameFor(model => model.PublishDate)
+            </div>
+            <div class="col-10">
+                @Html.DisplayFor(model => model.PublishDate)
+            </div>
+        </div>
+    @**@
     <div class="row mb-3">
         <div class="col-2 fw-bold">
             @Html.DisplayNameFor(model => model.Author)
         </div>
         <div class="col-10">
             @Html.DisplayFor(model => model.Author)
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-2 fw-bold">
-            @Html.DisplayNameFor(model => model.Genre)
-        </div>
-        <div class="col-10">
-            @Html.DisplayFor(model => model.Genre)
         </div>
     </div>
     <div class="row mb-3">
@@ -75,16 +77,16 @@
     </div>
 
 @* Can be uncommented and used for many to many relationships. ManyToManyRecord may be replaced with the related entiy name in the controller and views. *@
-    @*
+    
     <div class="row mb-3">
         <div class="col-2 fw-bold">
-            <b>@Html.DisplayNameFor(model => model.ManyToManyRecords)</b>
+            <b>@Html.DisplayNameFor(model => model.Genres)</b>
         </div>
         <div class="col-10">
-            @Html.Raw(Model.ManyToManyRecords)
+            @Html.Raw(Model.Genres)
         </div>
     </div>
-    *@
+    
 
     <hr /> 
     <a asp-action="Edit" asp-route-id="@Model.Record.Id">Edit</a>&nbsp;|&nbsp;

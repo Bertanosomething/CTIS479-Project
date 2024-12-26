@@ -16,15 +16,8 @@ namespace BLL.Models
         [DisplayName("Author Name")]
         public string Name => Record.Name;
 
-        [DisplayName("Books Written by the Author")]
-        /*public List<int> BookIds
-        {
-            get => Record.Books?.Select(ps => ps.Id).ToList();
-            set => Record.Books = value.Select(v => new Book() { Id = v }).ToList();
-        }*/
+        [DisplayName("Books")]
+        public string Books => string.Join("<br>", Record.Books.Select(b => b.Name));
 
-        
-        public List<string> BookNames { get; set; }
-        //public string UnitPrice => Record.UnitPrice.ToString("C2");
     }
 }

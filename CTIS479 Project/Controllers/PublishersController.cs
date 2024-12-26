@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BLL.Controllers.Bases;
 using BLL.Services;
 using BLL.Models;
+using Microsoft.EntityFrameworkCore;
 
 // Generated from Custom Template.
 
@@ -44,6 +45,22 @@ namespace CTIS479_Project.Controllers
             // Get item service logic:
             var item = _publisherService.Query().SingleOrDefault(q => q.Record.Id == id);
             return View(item);
+
+            //var publisher_item = _publisherService.Query().Include(p => p.Books).SingleOrDefault(q => q.Record.Id == id);
+            //if (publisher_item == null)
+            //{
+            //    return NotFound(); // Handle case if publisher not found
+            //}
+            //var item = new PublisherModel
+            //{
+            //    Record = publisher_item.Record, // Directly assign the publisher Record
+            //    Books = publisher_item.Books.Select(b => new BookModel
+            //    {
+            //        Record = b                  // Assign the Book entity to Record
+            //                                     // These properties will be populated by BookModel logic
+            //    }).ToList()
+            //};
+            //return View(item);
         }
 
         protected void SetViewData()
